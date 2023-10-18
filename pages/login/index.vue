@@ -83,10 +83,11 @@ const signIn = async () => {
         password: password.value,
     });
     if (user.value) {
-        window.alert("Login Success");
-        router.push("/");
+        await router.push("/");
+        useNuxtApp().$toast.success("Login Success");
     } else {
         errorMsg.value = error.message;
+        useNuxtApp().$toast.error(`${error.message}`);
         email.value = "";
         password.value = "";
     }

@@ -82,7 +82,7 @@
                 />
                 <label
                     for="description"
-                    class="pointer-events-none absolute top-0 left-0 origin-left -translate-y-1/2 transform text-sm text-gray-800 opacity-75 transition-all duration-100 ease-in-out peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-focus:top-0 peer-focus:pl-0 peer-focus:text-sm peer-focus:text-gray-800"
+                    class="pointer-events-none absolute top-0 left-0 origin-left -translate-y-[75%] transform text-sm text-gray-800 opacity-75 transition-all duration-100 ease-in-out peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-focus:top-0 peer-focus:pl-0 peer-focus:text-sm peer-focus:text-gray-800"
                     >Description</label
                 >
             </div>
@@ -122,6 +122,7 @@ const category = ref("");
 const description = ref("");
 const fileName = ref(null);
 const imageInput = ref(null);
+const router = useRouter();
 const client = useSupabaseClient();
 const user = useSupabaseUser();
 
@@ -141,7 +142,9 @@ const uploadFile = async () => {
 };
 
 const addProduct = async () => {
+    //upload image
     uploadFile();
+    //record to database
     const product = {
         product_id: uuidv4(),
         user_id: user.value.id,
@@ -160,7 +163,8 @@ const addProduct = async () => {
     if (error) {
         console.log(error);
     } else {
-        window.alert("Product Suscessfully Added");
+        await router.push("/dashboard/product/list");
+        useNuxtApp().$toast.success("Product Suscessfully Added");
     }
 };
 </script>

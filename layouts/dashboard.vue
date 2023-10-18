@@ -43,6 +43,7 @@ const router = useRouter();
 const client = useSupabaseClient();
 const signOut = async () => {
     const { error } = await client.auth.signOut();
-    router.push("/");
+    await router.push("/");
+    useNuxtApp().$toast("Successfully Log Out");
 };
 </script>

@@ -40,6 +40,7 @@
                             >Password</label
                         >
                     </div>
+                    <p class="text-blue-500 text-center">{{ successMsg }}</p>
                     <div class="my-6">
                         <button
                             type="submit"
@@ -48,7 +49,6 @@
                             Register
                         </button>
                     </div>
-                    <p class="text-blue-500">{{ successMsg }}</p>
                     <p class="text-center text-sm text-gray-500">
                         Already have an account?
                         <NuxtLink
@@ -81,6 +81,9 @@ const signUp = async () => {
         password: password.value,
     });
     if (error) throw error;
+    else {
+        useNuxtApp().$toast.info("Register Success");
+    }
     successMsg.value = "Check your email to confirm your account";
 };
 </script>

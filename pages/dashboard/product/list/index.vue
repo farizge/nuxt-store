@@ -84,7 +84,7 @@ const deleteProduct = async (id) => {
         items.value = items.value.filter(
             (product) => product.product_id !== id
         );
-        window.alert("Product Deleted");
+        useNuxtApp().$toast.error("Product Deleted");
     }
 };
 

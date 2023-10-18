@@ -3,10 +3,12 @@
         <div
             class="max-w-screen-xl flex flex-wrap items-center justify-between mx-40 p-4"
         >
-            <div class="flex flex-col">
-                <h1 class="font-black text-2xl leading-none">NUXT.</h1>
-                <p class="leading-none font-medium">SHOP</p>
-            </div>
+            <NuxtLink to="/">
+                <div class="flex flex-col">
+                    <h1 class="font-black text-2xl leading-none">NUXT.</h1>
+                    <p class="leading-none font-medium">SHOP</p>
+                </div>
+            </NuxtLink>
 
             <div class="flex gap-8">
                 <div v-for="link in links" :key="link.name">
