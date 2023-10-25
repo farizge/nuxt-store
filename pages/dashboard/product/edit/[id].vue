@@ -1,15 +1,14 @@
 <template>
     <div class="flex flex-col px-20">
-        <h1>{{ route.params.id }}</h1>
-        <!-- <h1 class="text-xl font-bold text-center">ADD PRODUCT</h1>
-        <form @submit.prevent="addProduct" class="flex flex-col gap-6 mt-4">
+        <h1 class="text-xl font-bold text-center">EDIT PRODUCT</h1>
+        <form @submit.prevent="editProduct" class="flex flex-col gap-6 mt-4">
             <div class="relative">
                 <input
                     type="text"
                     name="title"
                     placeholder="Product Title"
                     class="peer mt-1 w-full border-b-2 border-gray-300 px-0 py-1 placeholder:text-transparent focus:border-gray-500 focus:outline-none"
-                    v-model="title"
+                    v-model="productData.product_title"
                 />
                 <label
                     for="title"
@@ -23,7 +22,7 @@
                     name="brand"
                     placeholder="Product Brand"
                     class="peer mt-1 w-full border-b-2 border-gray-300 px-0 py-1 placeholder:text-transparent focus:border-gray-500 focus:outline-none"
-                    v-model="brand"
+                    v-model="productData.product_brand"
                 />
                 <label
                     for="brand"
@@ -37,7 +36,7 @@
                     name="price"
                     placeholder="Price Rp."
                     class="peer mt-1 w-full border-b-2 border-gray-300 px-0 py-1 placeholder:text-transparent focus:border-gray-500 focus:outline-none"
-                    v-model="price"
+                    v-model="productData.product_price"
                 />
                 <label
                     for="price"
@@ -51,7 +50,7 @@
                     name="stock"
                     placeholder="Product Stock"
                     class="peer mt-1 w-full border-b-2 border-gray-300 px-0 py-1 placeholder:text-transparent focus:border-gray-500 focus:outline-none"
-                    v-model="stock"
+                    v-model="productData.product_stock"
                 />
                 <label
                     for="stock"
@@ -65,7 +64,7 @@
                     name="category"
                     placeholder="Product Category"
                     class="peer mt-1 w-full border-b-2 border-gray-300 px-0 py-1 placeholder:text-transparent focus:border-gray-500 focus:outline-none"
-                    v-model="category"
+                    v-model="productData.product_category"
                 />
                 <label
                     for="category"
@@ -79,7 +78,7 @@
                     name="description"
                     placeholder="Product Description"
                     class="peer mt-1 w-full border-b-2 border-gray-300 px-0 py-1 placeholder:text-transparent focus:border-gray-500"
-                    v-model="description"
+                    v-model="productData.product_desc"
                 />
                 <label
                     for="description"
@@ -87,7 +86,7 @@
                     >Description</label
                 >
             </div>
-            <div class="flex flex-col gap-2">
+            <!-- <div class="flex flex-col gap-2">
                 <label for="image" class="text-gray-400">Input Image</label>
                 <input
                     type="file"
@@ -97,14 +96,15 @@
                     @change="getFileName"
                     ref="imageInput"
                 />
-            </div>
+            </div> -->
+
             <button
                 type="submit"
                 class="bg-black py-2 w-1/4 text-white self-center rounded-md mt-8"
             >
-                Add Product
+                Edit Product
             </button>
-        </form> -->
+        </form>
     </div>
 </template>
 
@@ -113,6 +113,36 @@ definePageMeta({
     layout: "dashboard",
     middleware: "auth",
 });
-const route = useRoute();
+import { ref } from "vue";
+
+const productData = ref({});
 const client = useSupabaseClient();
+const route = useRoute();
+const router = useRouter();
+
+const loadData = async () => {
+    const { product, error } = await $fetch(`/api/product/${route.params.id}`);
+    if (error) {
+        console.log(error);
+    } else {
+        productData.value = product;
+    }
+};
+onMounted(() => {
+    loadData();
+});
+const editProduct = async () => {
+    const { error } = await client
+        .from("products")
+        .update({ ...productData.value })
+        .eq("product_id", route.params.id)
+        .select();
+    if (error) {
+        console.log(error);
+    } else {
+        await router.push("/dashboard/product/list");
+        useNuxtApp().$toast.success("Product Updated");
+    }
+    // console.log({ ...productData.value });
+};
 </script>

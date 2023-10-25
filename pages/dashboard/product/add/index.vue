@@ -156,7 +156,7 @@ const addProduct = async () => {
         product_desc: description.value,
         img_file: fileName.value,
     };
-    const { data, error } = await client
+    const { error } = await client
         .from("products")
         .upsert({ ...product })
         .select();
@@ -164,7 +164,7 @@ const addProduct = async () => {
         console.log(error);
     } else {
         await router.push("/dashboard/product/list");
-        useNuxtApp().$toast.success("Product Suscessfully Added");
+        useNuxtApp().$toast.success("Product Successfully Added");
     }
 };
 </script>

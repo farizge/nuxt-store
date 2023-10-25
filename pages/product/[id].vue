@@ -1,5 +1,5 @@
 <template>
-    <div class="mx-40 my-8 flex gap-8">
+    <div v-if="product" class="mx-40 my-8 flex gap-8">
         <img
             :alt="product.product_title"
             :src="imageUrl + product.img_file"

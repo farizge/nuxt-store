@@ -79,7 +79,7 @@
 
 <script setup>
 const links = [
-    { name: "Shop", link: "/" },
+    { name: "Shop", link: "/shop" },
     { name: "New Arrivals", link: "/" },
     { name: "Category", link: "/" },
 ];
